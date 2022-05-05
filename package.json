@@ -1,0 +1,11 @@
+{
+  "name": "@tharious/gappdata",
+  "version": "0.0.1",
+  "description": "",
+  "browser": "./src/GAppData.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ed Armstrong",
+  "license": "MIT"
+}
