@@ -1,0 +1,12 @@
+Running Tests
+=============
+
+1) Create a '.env' file with a client-id field (see sample.env).  
+2) Run the test server:  'npm run test-server'.
+3) Browser to 'http://localhost:8000/index'.
+4) Sign in with a google account.
+5) Follow any prompts, timeout set to 10 seconds.
+
+The server will first look for files in 'text/www/' then in 'node_modules',
+lastly from source.  This is the accomidate test files, test packages, and source files
+respectively.  Note the '#importmap' script in 'index.ejs'.

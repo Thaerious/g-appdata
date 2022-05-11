@@ -1,11 +1,21 @@
 {
-  "name": "@tharious/gappdata",
-  "version": "0.0.1",
-  "description": "",
-  "browser": "./src/GAppData.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Ed Armstrong",
-  "license": "MIT"
+    "name": "@tharious/gappdata",
+    "version": "0.0.1",
+    "description": "A wrapper for Google drive api to handle app-data",
+    "browser": "./src/GAppData.js",
+    "scripts": {
+        "test-server": "node test/Server.js"
+    },
+    "author": "Ed Armstrong",
+    "license": "MIT",
+    "devDependencies": {
+        "@thaerious/logger": "^0.1.1",
+        "chai": "^4.3.6",
+        "dotenv": "^16.0.0",
+        "ejs": "^3.1.7",
+        "express": "^4.18.1",
+        "http": "^0.0.1-security",
+        "mocha": "^10.0.0"
+    },
+    "type": "module"
 }

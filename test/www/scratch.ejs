@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script type="importmap">
+            {
+                "imports": {
+                    "@tharious/gappdata": "/GAppData.js"
+                }
+            }
+        </script>
+
+        <script type="module" src="scratch.mjs" async defer></script>
+        <script src="https://apis.google.com/js/api.js" async defer></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </head>
+    <body>
+        <script>
+            handleCredentialResponse = function (credentials) {
+                window.clientId = credentials.clientId;
+            };
+        </script>
+
+        <div id="g_id_onload" data-client_id="<%= client_id %>" data-callback="handleCredentialResponse" data-auto_select="true"></div>
+        <div class="g_id_signin" data-type="standard"></div>
+    </body>
+</html>

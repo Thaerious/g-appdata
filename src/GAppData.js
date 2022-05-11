@@ -1,6 +1,7 @@
 "use strict";
+
 /**
- * Class for managing JSON objects in the Google app data file space.
+ * Class for managing JSON files in the Google app-data file space.
  * see:
  *   - API https://developers.google.com/drive/api/v3/reference?hl=en_US
  */
@@ -16,15 +17,19 @@ class GAppData {
     }
 
     /**
-     * Retrive the raw response of the last api call.
+     * Retrieve the raw response of the last api call.
      */
     get response(){
         return this._response;
     }
 
+    get accessToken(){
+        return this._accessToken;
+    }
+
     /**
      * Aquire an access token, must call before any other method.
-     * If not called, other methods will call it.
+     * If not previously called, other methods will call it first.
      */
     load() {
         return new Promise((resolve, reject) => {
@@ -33,7 +38,7 @@ class GAppData {
                     client_id: this.clientID,
                     scope: GAppData.scope,
                     callback: tokenResponse => {
-                        this.access_token = tokenResponse.access_token;
+                        this._accessToken = tokenResponse.access_token;
                         resolve(this);
                     },
                 });
@@ -47,7 +52,7 @@ class GAppData {
      */
     revokeToken() {
         return new Promise((resolve, reject) => {
-            google.accounts.oauth2.revoke(this.access_token, resolve);
+            google.accounts.oauth2.revoke(this._accessToken, resolve);
         });
     }
 
@@ -58,7 +63,6 @@ class GAppData {
     async check200(response){
         this._response = response;
         if (response.status < 200 || response.status > 299){
-            console.log(response.status);
             const json = await response.json();
             throw new Error(json.error.message);
         }        
@@ -83,7 +87,7 @@ class GAppData {
      * @returns {array}
      */
     async list() {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
 
         const param = {
             spaces: "appDataFolder",
@@ -93,7 +97,7 @@ class GAppData {
         const response = await fetch(this.url(null, param), {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                Authorization: `Bearer ${this._accessToken}`,
             },
         });
 
@@ -104,11 +108,12 @@ class GAppData {
 
     /**
      * Retrieve the contents of a file associated with a valid fileID.
+     * If the file is empty, returns an empty object.
      * @param {string} fileID a valid fileID returned from another api call.
-     * @returns {string} the contents of the file.
+     * @returns {object} the json contents of the file.
      */
     async get(fileID) {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
 
         const param = {
             spaces: "appDataFolder",
@@ -118,26 +123,29 @@ class GAppData {
         const response = await fetch(this.url(fileID, param), {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                Authorization: `Bearer ${this._accessToken}`,
             },
         });
 
         await this.check200(response);
-        return await response.text();
+        const text = await response.text();
+        if (text === "") return {};
+        return JSON.parse(text);
     }
 
     /**
      * Create a new file with provied filename.
+     * The file is created empty.
      * @param {string} filename The filename to give the file.
      * @return The id of the new file.
      */
     async create(filename = "name_not_set") {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
 
         const response = await fetch(this.url(), {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${this.access_token}`,
+                "Authorization": `Bearer ${this._accessToken}`,
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
@@ -148,23 +156,26 @@ class GAppData {
         });
 
         await this.check200(response);
-        return response.json().id;
+        const json = await response.json();
+        return json.id;
     }
 
     /**
      * Set the contents of the file to 'jsonContents'.
+     * If 'jsonContents' is an object JSON.stringify will be called on it.
      * @param {string} fileID A valid fileID returned from another api call.
      * @param {string} jsonContents String representation of a json object.
      */    
     async update(fileID, jsonContents) {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
+        if (typeof jsonContents === "object") jsonContents = JSON.stringify(jsonContents);
 
         const url = this.url(fileID, undefined, "https://www.googleapis.com/upload/drive/v3/files");
 
         const response = await fetch(url, {
             method: "PATCH",
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                Authorization: `Bearer ${this._accessToken}`,
                 "Content-Type": "application/json",
             },
             body: jsonContents,
@@ -178,12 +189,12 @@ class GAppData {
      * @param {string} fileID A valid fileID returned from another api call.
      */   
     async delete(fileID, contents) {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
 
         const response = await fetch(this.url(fileID), {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                Authorization: `Bearer ${this._accessToken}`,
             },
         });
 
@@ -196,12 +207,12 @@ class GAppData {
      * @param {string} filename The new filename.
      */   
     async rename(fileID, filename) {
-        if (!this.access_token) await this.load();
+        if (!this._accessToken) await this.load();
 
         const response = await fetch(this.url(fileID), {
             method: "PATCH",
             headers: {
-                Authorization: `Bearer ${this.access_token}`,
+                Authorization: `Bearer ${this._accessToken}`,
                 "Accept": "application/json", 
                 "Content-Type": "application/json",                
             },
