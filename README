@@ -10,13 +10,16 @@ Add the two Google scripts to the document:
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-In your .js file:
+In your .js file (if you have set up import maps):
     import GAppData from "@thaerious/gappdata";
 
     window.addEventListener("load", async ()=>{
         const gappdata =  new GAppData();
         window.gappdata = gappdata;
     });
+
+The source file is found here:
+    node_modules/@thaerious/gappdata/src/GappData.mjs
 
 Running Tests
 =============

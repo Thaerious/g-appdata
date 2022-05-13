@@ -2,7 +2,7 @@
     "name": "@thaerious/gappdata",
     "version": "0.0.1",
     "description": "A wrapper for Google drive api to handle app-data",
-    "browser": "./src/GAppData.js",
+    "browser": "./src/GAppData.mjs",
     "scripts": {
         "test-server": "node test/Server.js"
     },
