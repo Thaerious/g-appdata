@@ -10,6 +10,14 @@ Add the two Google scripts to the document:
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+In your .js file:
+    import GAppData from "@thaerious/gappdata";
+
+    window.addEventListener("load", async ()=>{
+        const gappdata =  new GAppData();
+        window.gappdata = gappdata;
+    });
+
 Running Tests
 =============
 
