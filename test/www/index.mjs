@@ -1,4 +1,6 @@
 import GAppData from "@tharious/gappdata";
+import "mocha";
+import "chai";
 
 window.handleCredentialResponse = function (credentials) {
     mocha.setup("bdd");

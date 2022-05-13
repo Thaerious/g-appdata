@@ -1,12 +1,25 @@
+Usage
+=====
+
+Use 'npm i git@github.com:Thaerious/g-appdata.git' to install the library.
+
+Add a client-id meta elemnt to the document head:
+    <meta name="client-id" content="12345679-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com">
+
+Add the two Google scripts to the document:
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 Running Tests
 =============
 
+0) Download (git clone) the repo and use 'npm i' to install dependencies.
 1) Create a '.env' file with a client-id field (see sample.env).  
 2) Run the test server:  'npm run test-server'.
 3) Browser to 'http://localhost:8000/index'.
 4) Sign in with a google account.
 5) Follow any prompts, timeout set to 10 seconds.
 
-The server will first look for files in 'text/www/' then in 'node_modules',
-lastly from source.  This is the accomidate test files, test packages, and source files
+The server will first look for files in 'text/www/' then in 'node_modules/',
+lastly from 'src/'.  This is the accommodate test files, test packages, and source files
 respectively.  Note the '#importmap' script in 'index.ejs'.

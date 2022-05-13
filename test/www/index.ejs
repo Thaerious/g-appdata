@@ -3,7 +3,9 @@
         <script type="importmap">
             {
                 "imports": {
-                    "@tharious/gappdata": "/GAppData.js"
+                    "@tharious/gappdata": "/GAppData.js",
+                    "mocha": "/mocha/mocha.js",
+                    "chai": "/chai/chai.js"
                 }
             }
         </script>
@@ -12,8 +14,6 @@
         <link rel="stylesheet" href="index.css" />
         <script src="https://apis.google.com/js/api.js" async defer></script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <script src="mocha/mocha.js"></script>
-        <script src="chai/chai.js"></script>
     </head>
     <body>
         <div id="g_id_onload" data-client_id="<%= client_id %>" data-callback="handleCredentialResponse" data-auto_select="true"></div>

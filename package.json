@@ -1,5 +1,5 @@
 {
-    "name": "@tharious/gappdata",
+    "name": "@thaerious/gappdata",
     "version": "0.0.1",
     "description": "A wrapper for Google drive api to handle app-data",
     "browser": "./src/GAppData.js",
