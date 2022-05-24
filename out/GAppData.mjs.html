@@ -1,4 +1,45 @@
-"use strict";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GAppData.mjs - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GAppData.html">GAppData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#list">list</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#load">load</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#rename">rename</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#revokeToken">revokeToken</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GAppData.html#update">update</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">GAppData.mjs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
 
 /**
  * Class for managing JSON files in the Google app-data file space.
@@ -89,7 +130,7 @@ class GAppData {
     * @ignore
     */
     async check200(response) {
-        if (response.status >= 200 && response.status <= 299) return true;
+        if (response.status >= 200 &amp;&amp; response.status &lt;= 299) return true;
     }
 
     /**
@@ -100,7 +141,7 @@ class GAppData {
      * @ignore
      */
     url(fileId, param, url = GAppData.URL) {
-        if (fileId && param) return url + "/" + fileId + "?" + new URLSearchParams(param);
+        if (fileId &amp;&amp; param) return url + "/" + fileId + "?" + new URLSearchParams(param);
         if (fileId) return url + "/" + fileId;
         if (param) return url + "?" + new URLSearchParams(param);
         return url;
@@ -120,13 +161,13 @@ class GAppData {
             },
         });
 
-        if (response.status >= 200 && response.status <= 299) return true;
+        if (response.status >= 200 &amp;&amp; response.status &lt;= 299) return true;
         return false;
     }
 
     /**
-     * List all files.<br>
-     * Returns an array of files each with: id, name, & modified time.
+     * List all files.&lt;br>
+     * Returns an array of files each with: id, name, &amp; modified time.
      * @returns {array}
      */
     async list() {
@@ -150,7 +191,7 @@ class GAppData {
     }
 
     /**
-     * Retrieve the contents of a file associated with a valid fileID.<br>
+     * Retrieve the contents of a file associated with a valid fileID.&lt;br>
      * If the file is empty, returns an empty object.
      * @param {string} fileID a valid fileID returned from another api call.
      * @returns {object} the json contents of the file.
@@ -177,7 +218,7 @@ class GAppData {
     }
 
     /**
-     * Create a new file with provided filename.<br>
+     * Create a new file with provided filename.&lt;br>
      * The file is created empty.  Use #update to set contents.
      * @param {string} filename The filename to give the file.
      * @return The id of the new file.
@@ -204,7 +245,7 @@ class GAppData {
     }
 
     /**
-     * Set the contents of the file to 'jsonContents'.<br>
+     * Set the contents of the file to 'jsonContents'.&lt;br>
      * If 'jsonContents' is an object JSON.stringify will be called on it.
      * @param {string} fileID A valid fileID returned from another api call.
      * @param {string} jsonContents String representation of a json object.
@@ -269,3 +310,22 @@ class GAppData {
 }
 
 export default GAppData;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue May 24 2022 08:39:26 GMT-0400 (Eastern Daylight Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

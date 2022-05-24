@@ -1,4 +1,32 @@
-"use strict";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: GAppData.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: GAppData.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
 
 /**
  * Class for managing JSON files in the Google app-data file space.
@@ -29,26 +57,30 @@ class GAppData {
         return this._response;
     }
 
-    /**
-     * Retrieve the access token.  Usually set by #load.
-     */
     get accessToken() {
         return this._accessToken;
     }
 
-    /**
-     * Set the access token if it's received from another source.
-     */
     set accessToken(value) {
         return (this._accessToken = value);
+    }
+
+    login() {
+        return new Promise((resolve, reject) => {
+            google.accounts.id.initialize({
+                client_id: this.clientID,
+                callback: tokenResponse => {
+                    resolve(tokenResponse);
+                },
+            });
+            google.accounts.id.prompt();
+        });
     }
 
     /**
      * Aquire an access token, must call before any other method.
      * If not previously called, other methods will call it first.
      * Load does not call #checkResponse so that a circular condition doesn't trigger.
-     * 
-     * @returns {string} Access Token
      */
     load() {
         return new Promise((resolve, reject) => {
@@ -76,20 +108,28 @@ class GAppData {
         });
     }
 
-    /**
-    * @ignore
-    */
     async checkResponse(response) {
         this._response = response;
         if (await this.check200(response)) return;
+        // if (await this.check400(response)) return;
         throw new Error(this.response.json());
     }
 
     /**
-    * @ignore
-    */
+     * Return false if the response status is not 2xx.
+     * @param {object} response The object returned from a fetch call.
+     */
     async check200(response) {
-        if (response.status >= 200 && response.status <= 299) return true;
+        if (response.status >= 200 &amp;&amp; response.status &lt;= 299) return true;
+    }
+
+    async check400(response) {
+        switch (response.status) {
+            case 401:
+                this.load();
+            default:
+                return false;
+        }
     }
 
     /**
@@ -97,10 +137,9 @@ class GAppData {
      * @param {string} fileId Appended to the url as part of the path.
      * @param {object} param All fields appended to the url as search parameters.
      * @param {string} param Optional, over-ride the default base url.
-     * @ignore
      */
     url(fileId, param, url = GAppData.URL) {
-        if (fileId && param) return url + "/" + fileId + "?" + new URLSearchParams(param);
+        if (fileId &amp;&amp; param) return url + "/" + fileId + "?" + new URLSearchParams(param);
         if (fileId) return url + "/" + fileId;
         if (param) return url + "?" + new URLSearchParams(param);
         return url;
@@ -120,13 +159,13 @@ class GAppData {
             },
         });
 
-        if (response.status >= 200 && response.status <= 299) return true;
+        if (response.status >= 200 &amp;&amp; response.status &lt;= 299) return true;
         return false;
     }
 
     /**
-     * List all files.<br>
-     * Returns an array of files each with: id, name, & modified time.
+     * List all files.
+     * Returns an array of files each with: id, name, &amp; modifiedTime
      * @returns {array}
      */
     async list() {
@@ -150,7 +189,7 @@ class GAppData {
     }
 
     /**
-     * Retrieve the contents of a file associated with a valid fileID.<br>
+     * Retrieve the contents of a file associated with a valid fileID.
      * If the file is empty, returns an empty object.
      * @param {string} fileID a valid fileID returned from another api call.
      * @returns {object} the json contents of the file.
@@ -177,8 +216,8 @@ class GAppData {
     }
 
     /**
-     * Create a new file with provided filename.<br>
-     * The file is created empty.  Use #update to set contents.
+     * Create a new file with provied filename.
+     * The file is created empty.
      * @param {string} filename The filename to give the file.
      * @return The id of the new file.
      */
@@ -204,7 +243,7 @@ class GAppData {
     }
 
     /**
-     * Set the contents of the file to 'jsonContents'.<br>
+     * Set the contents of the file to 'jsonContents'.
      * If 'jsonContents' is an object JSON.stringify will be called on it.
      * @param {string} fileID A valid fileID returned from another api call.
      * @param {string} jsonContents String representation of a json object.
@@ -228,7 +267,7 @@ class GAppData {
     }
 
     /**
-     * Remove a file.
+     * Remove a file
      * @param {string} fileID A valid fileID returned from another api call.
      */
     async delete(fileID, contents) {
@@ -269,3 +308,26 @@ class GAppData {
 }
 
 export default GAppData;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GAppData.html">GAppData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon May 23 2022 13:46:45 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
